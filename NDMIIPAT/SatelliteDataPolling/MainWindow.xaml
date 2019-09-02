@@ -1,0 +1,117 @@
+﻿<Window x:Class="SatelliteDataPolling.MainWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  Title="{Binding TitleText}" Width="1200" Height="550" ResizeMode="CanMinimize" Closing="Window_Closing" Icon="Image/1479834431_Layers.png">
+    <Window.InputBindings>
+        <KeyBinding Gesture="Ctrl+C" Command="{Binding CopyKeyCommand}"/>
+    </Window.InputBindings>
+    
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="800"/>
+			<ColumnDefinition Width="380"/>
+		</Grid.ColumnDefinitions>
+        <StackPanel>			
+            <Grid>
+				<GroupBox Header="동작 모드" Width="150" HorizontalAlignment="Left">
+					<StackPanel Orientation="Horizontal">
+						<RadioButton Command="{Binding RadioCommand}" IsChecked="{Binding AutoModeCheked}" IsEnabled="{Binding SetBtnEnable}" Content="자동" Margin="10,0,0,0"/>
+						<RadioButton Command="{Binding RadioCommand}" IsChecked="{Binding ManualModeCheked}" IsEnabled="{Binding SetBtnEnable}" Content="수동" Margin="10,0,0,0"/>
+					</StackPanel>
+				</GroupBox>
+				<!--TextBlock Text="Root Dir -" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="160,10,10,0" />
+				<TextBlock Text="{Binding RootPath}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="220,10,10,0" /-->
+                <Button Command="{Binding BtnPollingCommand}" Height="30" Width="120" Margin="0,10,39,0" HorizontalAlignment="Right">
+					<Button.Content>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="0.3*" />
+								<ColumnDefinition Width="0.7*" />
+							</Grid.ColumnDefinitions>
+                            <Image Source="{Binding ImageSource}" Grid.Column="0" HorizontalAlignment="Left" Width="20"  />
+                            <TextBlock Text="{Binding TextPollingBtn}" Grid.Column="1" VerticalAlignment="Center" Width="90" TextAlignment="Center" />
+						</Grid>
+					</Button.Content>
+				</Button>
+                <Button Command="{Binding BtnSettingCommand}" Height="30" Width="24" Margin="0,10,10,0" HorizontalAlignment="Right" IsEnabled="{Binding SetBtnEnable}">
+                    <Image Source="Image/1480408307_Settings.png"/>
+                </Button>
+            </Grid>			
+            <GroupBox Header="위성영상 리스트" >
+                <ListView ItemsSource="{Binding List}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" FontSize="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,10,0,0" SelectionMode="Extended" Height="440">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="수동 시작" Command="{Binding AlgorithmusCommand}" IsEnabled="{Binding ContextMenuEnable}" />
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="번호" Width="40">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid >
+                                            <TextBlock Text="{Binding Index}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="위성영상 감시경로" Width="250">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <TextBlock Text="{Binding DirPath}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="파일 이름" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <TextBlock Text="{Binding FileName}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="파일 크기(Bytes)" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid >
+                                            <TextBlock Text="{Binding Size}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="상태" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <TextBlock Text="{Binding Status}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </GroupBox>
+        </StackPanel>
+		
+		<!--
+
+						셋팅 윈도우
+
+		-->
+		<GroupBox x:Name="SettingBox" Header="알고리즘 환경설정" Grid.Column="1" Content="{Binding SettingView}" />
+    </Grid>
+</Window>

@@ -1,0 +1,270 @@
+﻿<UserControl x:Class="SatelliteDataPolling.SettingWindow.SettingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:control="clr-namespace:SatelliteDataPolling.Control"
+		Height="495" Width="380">
+    <Grid>
+        <StackPanel Margin="10" Visibility="{Binding SnowVisibility}">
+                    <DockPanel VerticalAlignment="Center">
+						<TextBlock Text="폭설 분석모드 :" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="65,0,0,0" />                    
+                        <ComboBox Width="175" HorizontalAlignment="Left" Margin="10,0,0,0" SelectedIndex="{Binding SnowMode}">
+                            <ComboBoxItem Content="NDSI" />
+                            <ComboBoxItem Content="FSC" />
+                        </ComboBox>
+                    </DockPanel>            
+
+            <GroupBox Header="입력/출력 경로 설정" Margin="0,0,10,0">
+						<StackPanel >
+							<DockPanel VerticalAlignment="Center" Visibility="{Binding AutoVisibility}" Margin="0,5,0,0">
+								<TextBlock Text="MOD03 입력파일 :" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="42,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding InPutFilePathMOD03}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="0"/>
+							</DockPanel>
+							<DockPanel VerticalAlignment="Center" Visibility="{Binding AutoVisibility}" Margin="0,5,0,0">
+								<TextBlock Text="MOD021KM 입력파일 :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="19.5,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding InPutFilePathMOD21}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="1"/>
+							</DockPanel>
+							<DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+								<TextBlock Text="결과 저장경로 :" Grid.Row="2" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="58.8,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ResultPath}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="2"/>
+							</DockPanel>
+							<CheckBox Content="중간 저장파일 삭제" VerticalAlignment="Center" Margin="145,5,0,5" IsChecked="{Binding IsFileCreated, Mode=TwoWay}" />
+						</StackPanel>
+					</GroupBox>
+
+					<GroupBox Header="AWS 자료 수집 설정" Margin="0,10,10,0" Visibility="{Binding AutoVisibility}">
+						<StackPanel>
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="106,5,0,0" >
+								<TextBlock Text="날짜 :" TextAlignment="Right" FontSize="11" />
+								<DatePicker Width="160" HorizontalAlignment="Left" Margin="10,0,0,0" SelectedDate="{Binding ManualSelectedDate, Mode=TwoWay}" />
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="106,5,0,5" >
+								<TextBlock Text="시간 :" TextAlignment="Right" FontSize="11" />
+								<control:TimePicker SelectedTime="{Binding ManualSelectedTime, Mode=TwoWay}" Margin="10,0,0,0" />
+								<TextBlock Text="KST" Margin="10,0,0,0" />
+							</StackPanel>
+						</StackPanel>
+					</GroupBox>
+					
+					<GroupBox Header="건설/습설 기준값(Threshold) 설정" Margin="0,10,10,0">
+						<Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.4*" />
+                            <ColumnDefinition Width="0.6*"/>
+                        </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="온도(Temperature) :" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="0,5,0,0"/>
+						<DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,5,0,0">
+							<control:NumericTextBox Width="50" isMinMax="True" minValue="-50" maxValue="100" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding MinTemperature}"/>
+							<TextBlock Text="°C" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,0,0"/>
+							<TextBlock Text="~" TextAlignment="Center" Margin="10,0,10,0" />
+							<control:NumericTextBox Width="50" isMinMax="True" minValue="-50" maxValue="100" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding MaxTemperature}"/>
+							<TextBlock Text="°C" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,0,0" />
+						</DockPanel>
+                    <TextBlock Text="습도(Humidity) :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="0,5,0,5"/>
+						<DockPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,5,0,5">
+                        <control:NumericTextBox Width="50" isMinMax="True" minValue="0" maxValue="100" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding Humidity}"/>
+						<TextBlock Text="%" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,0,0" />
+						</DockPanel>
+                    </Grid>
+					</GroupBox>	
+
+					<GroupBox Header="GIS 시설 붕괴위험 기준값 설정" Margin="0,10,10,0">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="0.4*" />
+								<ColumnDefinition Width="0.6*"/>
+							</Grid.ColumnDefinitions>
+						
+							<TextBlock Text="시설재배지(건설) :" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="0,5,0,0"/>
+							<DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,5,0,0">
+								<control:NumericTextBox Width="50" HorizontalAlignment="Left" isMinMax="True" minValue="0" maxValue="255" Margin="10,0,0,0" Text="{Binding Building_Temperature}"/>
+								<TextBlock Text="cm" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,0,0" />
+								<TextBlock Text="[범위: 0 ~ 255]" VerticalAlignment="Center" TextAlignment="Left" Margin="10,0,0,0" />
+							</DockPanel>
+							<TextBlock Text="시설재배지(습설) :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="0,5,0,0"/>
+							<DockPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,5,0,0">
+								<control:NumericTextBox Width="50" HorizontalAlignment="Left" isMinMax="True" minValue="0" maxValue="255" Margin="10,0,0,0" Text="{Binding Building_Humidity}"/>
+								<TextBlock Text="cm" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,0,0" />
+								<TextBlock Text="[범위: 0 ~ 255]" VerticalAlignment="Center" TextAlignment="Left" Margin="10,0,0,0" />
+							</DockPanel>
+							<TextBlock Text="동물/식물 관련시설(건설) :" Grid.Row="2" VerticalAlignment="Center" TextAlignment="Right" FontSize="10.3" Margin="0,5,0,0"/>
+							<DockPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,5,0,0">
+								<control:NumericTextBox Width="50" HorizontalAlignment="Left" isMinMax="True" minValue="0" maxValue="255" Margin="10,0,0,0" Text="{Binding AnimalPlant_Temperature}"/>
+								<TextBlock Text="cm" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,0,0" />
+								<TextBlock Text="[범위: 0 ~ 255]" VerticalAlignment="Center" TextAlignment="Left" Margin="10,0,0,0" />
+							</DockPanel>
+							<TextBlock Text="동물/식물 관련시설(습설) :" Grid.Row="3" VerticalAlignment="Center" TextAlignment="Right" FontSize="10.3" Margin="0,5,0,5"/>
+							<DockPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,5,0,5">
+								<control:NumericTextBox Width="50" HorizontalAlignment="Left" isMinMax="True" minValue="0" maxValue="255" Margin="10,0,0,0" Text="{Binding AnimalPlant_Humidity}"/>
+								<TextBlock Text="cm" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,0,0" />
+								<TextBlock Text="[범위: 0 ~ 255]" VerticalAlignment="Center" TextAlignment="Left" Margin="10,0,0,0" />
+							</DockPanel>
+						</Grid>
+					</GroupBox> 
+         </StackPanel>
+
+		<StackPanel Margin="10" Visibility="{Binding Drought1Visibility}">
+					<GroupBox Header="환경 설정" Margin="0,0,10,0">
+						<StackPanel >
+                            <GroupBox Header="시간 설정" Margin="0,10,10,0" Visibility="{Binding AutoVisibility}">
+								<StackPanel>
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="106,5,0,0" >
+										<TextBlock Text="날짜 :" TextAlignment="Right" FontSize="11" />
+										<DatePicker Width="160" HorizontalAlignment="Left" Margin="10,0,0,0" SelectedDate="{Binding ManualSelectedDate, Mode=TwoWay}" />
+									</StackPanel>
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="106,5,0,5" >
+										<TextBlock Text="시간 :" TextAlignment="Right" FontSize="11" />
+										<control:TimePicker SelectedTime="{Binding ManualSelectedTime, Mode=TwoWay}" Margin="10,0,0,0" />
+										<TextBlock Text="KST" Margin="10,0,0,0" />
+									</StackPanel>
+								</StackPanel>
+							</GroupBox>
+                    <GroupBox Header="경로 설정" Margin="0,10,10,0" >
+                        <StackPanel>
+                            <DockPanel VerticalAlignment="Center" Margin="0,5,0,0" Visibility="{Binding AutoVisibility}">
+                                <TextBlock Text="LANDSAT 위성영상 경로 :" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="8,0,0,0" />
+                                <TextBox Width="140" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding LandSatSatelliteImagePath}"/>
+                                <Button Content="..." Width="20" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="10"/>
+                            </DockPanel>
+                            <!--<DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+								<TextBlock Text="LANDSAT Mask 영상 경로 :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="0.5,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding LandSatMaskImagePath}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="11"/>
+							</DockPanel>-->
+                            <DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+                                <TextBlock Text="             알고리즘 경로 :" Grid.Row="2" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="10.8,0,0,0"/>
+                                <TextBox Width="140" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding DamShapeDataPath}"/>
+                                <Button Content="..." Width="20" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="12"/>
+                            </DockPanel>
+                            <DockPanel VerticalAlignment="Center" Margin="0,5,0,5">
+                                <TextBlock Text="가뭄분석 결과 경로 :" Grid.Row="3" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="34,0,0,0"/>
+                                <TextBox Width="140" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding LandSatResultPath}"/>
+                                <Button Content="..." Width="20" HorizontalAlignment="Left" Margin="10,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="13"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+					</GroupBox>					
+			</StackPanel>
+
+			<StackPanel Margin="10" Visibility="{Binding Drought2Visibility}">							
+                <DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+					<TextBlock Text="가뭄분석 결과 저장 경로 :" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="0,0,0,0"/>
+					<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ModisLandAnalysisResultPath}"/>
+					<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="20"/>
+				</DockPanel>
+
+                <DockPanel VerticalAlignment="Center" Margin="0,10,0,0">
+                    <TextBlock Text="가뭄분석 알고리즘 경로  :" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="0,0,0,0"/>
+                    <TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ModisAlgorithmPath}"/>
+                    <Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="21"/>
+                </DockPanel>
+
+            <DockPanel VerticalAlignment="Center" Margin="0,10,0,0" Visibility="{Binding AutoVisibility}">
+					<TextBlock Text="Day of Year(DOY) 값 :" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="19.1,0,0,0"/>
+					<DatePicker x:Name="DatePicker" Width="182" HorizontalAlignment="Left" Margin="6.5,0,0,0" SelectedDate="{Binding SelectedDate, Mode=TwoWay}">
+						<DatePicker.Resources>
+							<Style TargetType="{x:Type DatePickerTextBox}">
+								<Setter Property="Control.Template">
+									<Setter.Value>
+										<ControlTemplate>
+											<TextBox x:Name="PART_TextBox"
+											 Text="{Binding DOY}" />
+										</ControlTemplate>
+									</Setter.Value>
+								</Setter>
+							</Style>
+						</DatePicker.Resources>
+					</DatePicker>
+				</DockPanel>
+<!--
+							<GroupBox Header="AWS 자료 수집 설정" Margin="0,10,10,0" Visibility="{Binding AutoVisibility}">
+								<StackPanel>
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="106,5,0,0" >
+										<TextBlock Text="날짜 :" TextAlignment="Right" FontSize="11" />
+										<DatePicker Width="160" HorizontalAlignment="Left" Margin="10,0,0,0" SelectedDate="{Binding ManualSelectedDate, Mode=TwoWay}" />
+									</StackPanel>
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="106,5,0,5" >
+										<TextBlock Text="시간 :" TextAlignment="Right" FontSize="11" />
+										<control:TimePicker SelectedTime="{Binding ManualSelectedTime, Mode=TwoWay}" Margin="10,0,0,0" />
+										<TextBlock Text="KST" Margin="10,0,0,0" />
+									</StackPanel>
+								</StackPanel>
+							</GroupBox>
+-->
+			    <GroupBox Header="위성영상 경로" Margin="0,10,10,0">
+				    <StackPanel >
+                        <DockPanel VerticalAlignment="Center" Margin="0,5,0,0" Visibility="{Binding AutoVisibility}">
+                            <TextBlock Text="GPM 입력파일        :" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="16,0,0,0"/>
+                            <TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ManualGpmPath}"/>
+                            <Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="24"/>
+                        </DockPanel>
+                        <DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+						    <TextBlock Text="MOD11A2 입력파일 :" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="16,0,0,0"/>
+						    <TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding MOD11A2InputPath}"/>
+						    <Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="22"/>
+					    </DockPanel>
+					    <DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+						    <TextBlock Text="MOD13A2 입력파일 :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="16,0,0,0"/>
+						    <TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding MOD13A2InputPath}"/>
+						    <Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="23"/>
+					    </DockPanel>
+				    </StackPanel>
+			    </GroupBox>
+<!--
+					<GroupBox Header="참고자료 저장 경로" Margin="0,10,10,0">
+						<StackPanel >
+							<DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+								<TextBlock Text="Administrative :" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="43.5,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding Administrative}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="24"/>
+							</DockPanel>
+							<DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+								<TextBlock Text="AWS_PREC :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="60.5,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding AWS_PREC}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="25"/>
+							</DockPanel>
+							<DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+								<TextBlock Text="AWS_TEMP :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="58.5,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding AWS_TEMP}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="26"/>
+							</DockPanel>
+							<DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+								<TextBlock Text="GRID :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="89.4,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding GRID}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="27"/>
+							</DockPanel>
+							<DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+								<TextBlock Text="MOD11A2 :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="62.8,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding MOD11A2}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="28"/>
+							</DockPanel>
+							<DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+								<TextBlock Text="MOD13A2 :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="62.8,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding MOD13A2}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="29"/>
+							</DockPanel>
+							<DockPanel VerticalAlignment="Center" Margin="0,5,0,0">
+								<TextBlock Text="GPM :" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" FontSize="11" Margin="90.6,0,0,0"/>
+								<TextBox Width="150" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding GPM}"/>
+								<Button Content="..." Width="20" HorizontalAlignment="Left" Margin="3.5,0,0,0" Command="{Binding PathSettingCommand}" CommandParameter="30"/>
+							</DockPanel>
+						</StackPanel>
+					</GroupBox>
+                -->
+			</StackPanel>
+    </Grid>
+</UserControl>

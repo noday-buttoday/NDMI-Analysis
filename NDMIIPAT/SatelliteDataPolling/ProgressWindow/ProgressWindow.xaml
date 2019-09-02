@@ -1,0 +1,9 @@
+﻿<Window x:Class="SatelliteDataPolling.ProgressWindow.ProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ProgressWindow" Height="100" Width="250" WindowStyle="ToolWindow" ResizeMode="NoResize" Topmost="True" Closing="Window_Closing">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock x:Name="TextBlock" Text="내용을 입력 하세요." FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="5"/>
+		<ProgressBar x:Name="Pb" Width="230" Height="20" Maximum="1000" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#00000000"/>
+    </StackPanel>
+</Window>
